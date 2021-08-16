@@ -1,0 +1,14 @@
+spring:
+    datasource:
+      password: Pass1234
+      username: postgres
+      url: jdbc:postgresql://localhost:5432/accounts
+    jpa:
+      hibernate:
+        ddl-auto: create-drop
+      generate-ddl: true
+client:
+  customers:
+    url: http://localhost:8091/api/v1/internal/customers
+server:
+  port: 8082
