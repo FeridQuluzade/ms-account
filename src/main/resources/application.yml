@@ -1,12 +1,15 @@
 spring:
-    datasource:
-      password: Pass1234
-      username: postgres
-      url: jdbc:postgresql://localhost:5432/accounts
-    jpa:
-      hibernate:
-        ddl-auto: create-drop
-      generate-ddl: true
+  datasource:
+    password: Pass1234
+    username: postgres
+    url: jdbc:postgresql://localhost:5432/accounts
+  jpa:
+    hibernate:
+      ddl-auto: create
+    generate-ddl: true
+  liquibase:
+    enabled: false
+    change-log: classpath:liquibase/changelog-master.yml
 client:
   customers:
     url: http://localhost:8091/api/v1/internal/customers

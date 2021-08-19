@@ -1,6 +1,5 @@
 package az.bank.mcaccount.mapper;
 
-import az.bank.mcaccount.dto.AccountCreateDto;
 import az.bank.mcaccount.dto.AccountDto;
 import az.bank.mcaccount.repository.model.AccountEntity;
 import az.bank.mcaccount.repository.model.AccountHistoryEntity;
@@ -16,9 +15,8 @@ public interface AccountMapper {
 
     List<AccountDto> toDto(List<AccountEntity> entities);
 
-    AccountEntity fromDto(AccountCreateDto accountDto);
-
     AccountEntity fromDto(AccountDto accountDto);
+
 
     AccountHistoryEntity toAccountHistoryEntity(AccountEntity accountEntity);
 }
