@@ -1,7 +1,6 @@
 package az.bank.mcaccount.service;
 
 import az.bank.mcaccount.client.CustomerClient;
-import az.bank.mcaccount.dto.AccountCreateDto;
 import az.bank.mcaccount.dto.AccountDto;
 import az.bank.mcaccount.dto.client.CustomerDto;
 import az.bank.mcaccount.exception.AccountNotFoundException;
@@ -10,7 +9,6 @@ import az.bank.mcaccount.mapper.RabbitTemplateMapper;
 import az.bank.mcaccount.repository.AccountHistoryRepository;
 import az.bank.mcaccount.repository.AccountRepository;
 import az.bank.mcaccount.repository.model.AccountEntity;
-import az.bank.mcaccount.repository.model.AccountHistoryEntity;
 import az.bank.mcaccount.repository.model.AccountStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -44,12 +42,12 @@ public class AccountServiceImpl implements AccountService {
                 .orElseThrow(() -> new AccountNotFoundException("Account with given not found Id : " + id));
     }
 
-    private AccountEntity checkStatus(Long id){
+    private AccountEntity checkStatus(Long id) {
         findAccount(id);
-        if (findAccount(id).getAccountStatus().equals(AccountStatus.ACCEPTED)){
+        if (findAccount(id).getAccountStatus().equals(AccountStatus.ACCEPTED)) {
             return findAccount(id);
-        }else {
-            throw  new AccountNotFoundException("Account status pending " +findAccount(id));
+        } else {
+            throw new AccountNotFoundException("Account status pending " + findAccount(id));
         }
     }
 
@@ -79,12 +77,12 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void createAccount(AccountCreateDto createDto) {
+    public void createAccount(AccountDto createDto) {
         CustomerDto customerDto = customerClient.getCustomerById(createDto.getCustomerId());
+        createDto.setAccountStatus(AccountStatus.PENDING);
         accountRepository.save(accountMapper.fromDto(createDto));
         customerClient.contacts(customerDto)
                 .forEach(rabbitTemplateMapper::sendCreateMessage);
-
     }
 
     @Override
@@ -97,13 +95,6 @@ public class AccountServiceImpl implements AccountService {
         accountUpdateEntity.setId(id);
         accountUpdateEntity.setAccountStatus(AccountStatus.PROCESSING);
         accountRepository.save(accountUpdateEntity);
-
-//        customerClient.contacts(customerDto)
-//                .forEach(contactDto -> rabbitTemplateMapper
-//                        .sendEditMessage(accountHistoryRepository.findByAccountEntityId(id),
-//                                ,
-//                                contactDto));
-
     }
 
     @Override

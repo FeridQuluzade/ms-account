@@ -25,13 +25,12 @@ public class AccountScheduler {
                             RabbitTemplateMapper rabbitTemplateMapper) {
         this.accountRepository = accountRepository;
         this.accountHistoryRepository = accountHistoryRepository;
-
         this.customerClient = customerClient;
         this.rabbitTemplateMapper = rabbitTemplateMapper;
     }
 
-    @Scheduled(fixedDelay = 10_000)
-    @SchedulerLock(name = "listAccountStatusPending", lockAtLeastForString = "PT2S")
+//    @Scheduled(fixedDelay = 10_000)
+   // @SchedulerLock(name = "listAccountStatusPending", lockAtLeastForString = "PT2S")
     public void chanceStatus() {
         accountRepository.findByAccountStatus(AccountStatus.PENDING).forEach(accountEntity -> {
                     accountEntity.setAccountStatus(AccountStatus.ACCEPTED);
@@ -44,8 +43,8 @@ public class AccountScheduler {
         );
     }
 
-    @Scheduled(fixedDelay = 120_000)
-    @SchedulerLock(name = "listAccountStatusPendingUpdate", lockAtLeastForString = "PT0.5S")
+//    @Scheduled(fixedDelay = 120_000)
+   // @SchedulerLock(name = "listAccountStatusPendingUpdate", lockAtLeastForString = "PT0.5S")
     public void chanceBalanceStatus() {
         accountRepository.findByAccountStatus(AccountStatus.PROCESSING).forEach(accountEntity -> {
             AccountHistoryEntity accountHistoryEntityAccepted =

@@ -34,12 +34,13 @@ public class CustomerClient {
         if (responseEntity.getStatusCode() == HttpStatus.NOT_FOUND) {
             throw new CustomerNotFoundException("customer not found with given id: " + id);
         }
+        log.info(responseEntity.getBody().toString());
         return responseEntity.getBody();
     }
 
     public List<ContactDto> contacts(CustomerDto customerDto) {
         return customerDto
-                .getContactDtoSet()
+                .getCustomerContactAddress()
                 .stream()
                 .filter(contactDto -> contactDto.getContactType().equals(ContactType.EMAIL))
                 .collect(Collectors.toList());

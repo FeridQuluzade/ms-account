@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EntityListeners(AccountEntityListener.class)
+//@EntityListeners(AccountEntityListener.class)
 public class AccountEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,6 +37,7 @@ public class AccountEntity {
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private LocalDateTime created_at;
+
     @UpdateTimestamp
     private LocalDateTime updated_at;
 
